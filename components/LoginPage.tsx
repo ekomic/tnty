@@ -7,19 +7,28 @@ interface LoginPageProps {
   onLogin: () => void;
 }
 
+const VALID_EMAIL = "seebalance@gmail.com";
+const VALID_PASSWORD = "12ty243";
+
 export default function LoginPage({ onLogin }: LoginPageProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      onLogin();
-    }, 1200);
+      if (email === VALID_EMAIL && password === VALID_PASSWORD) {
+        onLogin();
+      } else {
+        setError("Invalid email or password.");
+      }
+    }, 1000);
   };
 
   return (
@@ -154,6 +163,12 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               </div>
             </div>
 
+            {error && (
+              <div className="px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+                {error}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
@@ -179,11 +194,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             </p>
           </div>
 
-          <div className="mt-8 p-4 bg-white/3 border border-white/5 rounded-xl">
-            <p className="text-slate-500 text-xs text-center">
-              Demo: use any email and password to sign in
-            </p>
-          </div>
+
         </div>
       </div>
     </div>
